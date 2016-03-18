@@ -1,0 +1,25 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    <bean id="encryptablePropertyPlaceholderConfigurer" class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+        <constructor-arg ref="configurationEncryptor"/>
+        <property name="locations">
+            <list>
+                <value>classpath:database/db.properties</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+        <property name="config" ref="environmentVariablesConfiguration"/>
+    </bean>
+    <!--class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">-->
+    <bean id="environmentVariablesConfiguration"
+    class="com.teja.encryptor.OwnEncrypts">
+        <property name="algorithm" value="PBEWithMD5AndDES"/>
+        <!--<property name="passwordEnvName" value="ENCRYPTION_PASSWORD"/>-->
+        <!--<property name="password" value="nonsense"/>-->
+    </bean>
+    <import resource="database/Spring-Datasource.xml"/>
+    <import resource="customer/Spring-Customer.xml"/>
+</beans>
